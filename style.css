@@ -1,0 +1,146 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* BACKGROUND */
+.bg {
+    min-height: 100vh;
+    background: #0b5e3c; /* GREEN BACKGROUND */
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    color: white;
+}
+
+/* LOGO BOX */
+.logo {
+    background: white;
+    color: black;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+/* CENTER HEADER TEXT */
+.header-center {
+    text-align: center;
+}
+
+.header-center h2 {
+    font-size: 22px;
+}
+
+.header-center p {
+    margin: 4px 0;
+    font-size: 16px;
+}
+
+.header-center span {
+    font-size: 14px;
+}
+
+/* LOGIN BUTTON (LINK STYLE) */
+.login-btn {
+    background: white;
+    color: #0b5e3c; /* GREEN */
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* CARD */
+.card {
+    background: white;
+    width: 80%;
+    max-width: 900px;
+    margin: 100px auto;
+    padding: 50px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+/* CARD TEXT */
+.card h1 {
+    font-size: 36px;
+}
+
+.card h3 {
+    color: #0b5e3c; /* GREEN */
+    margin: 15px 0;
+}
+
+.card p {
+    color: #444;
+    margin: 20px 0;
+    line-height: 1.6;
+}
+
+/* TABLE STYLES */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+table th {
+    background: #0b5e3c;
+    color: white;
+    padding: 10px 12px;
+    text-align: center;
+}
+
+table td {
+    padding: 9px 12px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+/* GREEN ROW - completed */
+.row-green {
+    background: #d4edda;
+    color: #155724;
+    font-weight: bold;
+}
+
+/* RED ROW - incomplete */
+.row-red {
+    background: #f8d7da;
+    color: #721c24;
+    font-weight: bold;
+}
+
+/* SECTION HEADING HIGHLIGHT */
+.section-heading {
+    background: #0b5e3c;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    margin: 20px 0 10px 0;
+    display: inline-block;
+    font-size: 20px;
+}
+
+/* MAIN BUTTON (LINK STYLE) */
+.primary-btn {
+    background: #0b5e3c; /* GREEN */
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}

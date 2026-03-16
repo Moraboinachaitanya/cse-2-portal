@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg">
+
+<div class="card">
+    <h2>Student Login</h2>
+
+    <input type="text" id="studentId" placeholder="Enter University ID">
+    <br><br>
+
+    <button onclick="login()">View Details</button>
+</div>
+
+<script>
+function login() {
+    const id = document.getElementById("studentId").value.trim();
+    if (id === "") {
+        alert("Please enter University ID");
+        return;
+    }
+    localStorage.setItem("studentId", id);
+    window.location.href = "dashboard.html";
+}
+</script>
+
+</body>
+</html>

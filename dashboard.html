@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI&DS Student Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg">
+
+<div class="card">
+    <h2>AI&DS Student Details</h2>
+
+    <input type="text" id="studentId" placeholder="Enter University ID">
+    <br><br>
+
+    <button onclick="getStudent()">Get Details</button>
+
+    <hr>
+
+    <div id="result"></div>
+</div>
+
+<!-- Load script AFTER HTML -->
+<script src="script.js"></script>
+
+<script>
+    const savedId = localStorage.getItem("studentId");
+
+    async function init() {
+        await loadMasterCourses();   // wait for categories
+        if (savedId) {
+            document.getElementById("studentId").value = savedId;
+            getStudent();
+        }
+    }
+
+    init();
+</script>
