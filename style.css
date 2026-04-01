@@ -144,3 +144,29 @@ table td {
     display: inline-block;
     cursor: pointer;
 }
+
+/* LOGIN LAYOUT */
+.login-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.field-group {
+    min-width: 260px;
+    text-align: left;
+}
+
+.field-group input {
+    width: 100%;
+    padding: 8px 10px;
+}
+
+@media (max-width: 700px) {
+    .field-group {
+        min-width: 100%;
+    }
+}

@@ -2,30 +2,175 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Student Login</title>
+    <title>Portal Login</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg">
 
 <div class="card">
-    <h2>Student Login</h2>
+    <h2>Teacher Login</h2>
 
-    <input type="text" id="studentId" placeholder="Enter University ID">
-    <br><br>
+    <div class="login-row">
+        <div class="field-group">
+            <label for="teacherId"><b>Teacher ID</b></label><br>
+            <input type="text" id="teacherId" placeholder="Enter Teacher ID">
+        </div>
+
+        <div class="field-group">
+            <label for="studentId"><b>Student ID</b></label><br>
+            <input type="text" id="studentId" placeholder="Enter University ID">
+        </div>
+    </div>
+    <br>
 
     <button onclick="login()">View Details</button>
+
+    <div id="teacherCountSection" style="margin-top: 24px; text-align: left;"></div>
 </div>
 
+<script src="script.js"></script>
+
 <script>
+let loginCourseRows = [];
+
 function login() {
-    const id = document.getElementById("studentId").value.trim();
-    if (id === "") {
-        alert("Please enter University ID");
+    const ALLOWED_TEACHER_ID = "8279";
+    const enteredTeacherId = document.getElementById("teacherId").value.trim();
+    const studentId = document.getElementById("studentId").value.trim();
+    const savedTeacherId = localStorage.getItem("teacherId") || "";
+    const teacherId = enteredTeacherId || savedTeacherId;
+
+    if (teacherId === "") {
+        alert("Please enter Teacher ID");
         return;
     }
-    localStorage.setItem("studentId", id);
-    window.location.href = "dashboard.html";
+
+    if (teacherId !== ALLOWED_TEACHER_ID) {
+        alert("Access denied. Only authorized teacher can access this portal.");
+        return;
+    }
+
+    if (studentId === "") {
+        alert("Please enter Student ID to view details.");
+        return;
+    }
+
+    localStorage.setItem("teacherId", teacherId);
+    localStorage.setItem("prefillStudentId", studentId);
+    localStorage.setItem("loginRole", "teacher");
+    window.location.href = `dashboard.html?teacherId=${encodeURIComponent(teacherId)}&studentId=${encodeURIComponent(studentId)}`;
 }
+
+async function renderLoginStudentCountTable() {
+    const ALLOWED_TEACHER_ID = "8279";
+    const teacherIdInput = document.getElementById("teacherId");
+    const teacherCountSection = document.getElementById("teacherCountSection");
+    const teacherId = (teacherIdInput.value || "").trim();
+
+    if (teacherId !== ALLOWED_TEACHER_ID) {
+        teacherCountSection.innerHTML = "";
+        return;
+    }
+
+    teacherCountSection.innerHTML = "<p>Loading student count information...</p>";
+
+    try {
+        const rows = await loadTeacherCourseCompletionRows();
+        loginCourseRows = rows;
+
+        if (!rows.length) {
+            teacherCountSection.innerHTML = "<p>No student count data found.</p>";
+            return;
+        }
+
+        teacherCountSection.innerHTML = `
+            <h2 class="section-heading">Student Count Information (Separate Table)</h2>
+            <p><b>Total Courses:</b> ${rows.length}</p>
+            <div style="margin: 10px 0;">
+                <input
+                    type="text"
+                    id="courseSearchInput"
+                    placeholder="Search by Course Code or Course Name"
+                    style="width: 100%; max-width: 420px; padding: 8px 10px;"
+                    oninput="filterLoginCountTable(this.value)"
+                >
+            </div>
+            <table border="1" cellpadding="8" cellspacing="0">
+                <tr>
+                    <th>Sl No</th>
+                    <th>Category</th>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Students Completed</th>
+                    <th>Student List</th>
+                </tr>
+                <tbody id="teacherCountTableBody">
+                ${rows.map((row, index) => `
+                    <tr class="teacher-count-row">
+                        <td>${index + 1}</td>
+                        <td>${row.category || "N/A"}</td>
+                        <td>${row.courseCode}</td>
+                        <td>${row.courseName}</td>
+                        <td>${row.completedStudents}</td>
+                        <td><a href="#" onclick="openLoginCourseStudents(${index}); return false;">Open Details Page</a></td>
+                    </tr>
+                `).join("")}
+                </tbody>
+            </table>
+            <br>
+        `;
+    } catch (error) {
+        console.error("Error rendering login student count table:", error);
+        teacherCountSection.innerHTML = "<p>Unable to load student count information.</p>";
+    }
+}
+
+function openLoginCourseStudents(index) {
+    const selected = loginCourseRows[index];
+
+    if (!selected) return;
+
+    try {
+        localStorage.setItem("selectedCourseStudents", JSON.stringify(selected));
+    } catch (error) {
+        console.error("Unable to store selected course students:", error);
+        alert("Unable to open details page right now.");
+        return;
+    }
+
+    window.location.href = `course-students.html?courseCode=${encodeURIComponent(selected.courseCode || "")}&source=login`;
+}
+
+function filterLoginCountTable(query) {
+    const normalizedQuery = String(query || "").trim().toLowerCase();
+    const rows = document.querySelectorAll("#teacherCountTableBody .teacher-count-row");
+
+    rows.forEach(row => {
+        const courseCode = (row.children[1]?.textContent || "").toLowerCase();
+        const courseName = (row.children[2]?.textContent || "").toLowerCase();
+        const matches =
+            normalizedQuery === "" ||
+            courseCode.includes(normalizedQuery) ||
+            courseName.includes(normalizedQuery);
+
+        row.style.display = matches ? "" : "none";
+    });
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+    const ALLOWED_TEACHER_ID = "8279";
+    const teacherIdInput = document.getElementById("teacherId");
+    const savedTeacherId = localStorage.getItem("teacherId") || "";
+
+    if (savedTeacherId === ALLOWED_TEACHER_ID) {
+        teacherIdInput.value = savedTeacherId;
+        teacherIdInput.readOnly = true;
+        teacherIdInput.placeholder = "Teacher access verified";
+    }
+
+    renderLoginStudentCountTable();
+    teacherIdInput.addEventListener("input", renderLoginStudentCountTable);
+});
 </script>
 
 </body>

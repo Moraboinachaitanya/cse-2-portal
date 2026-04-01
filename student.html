@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg">
+
+<div class="card">
+    <h2>AI&DS Student Details</h2>
+    <p>Student portal is open access.</p>
+
+    <input type="text" id="studentId" placeholder="Enter University ID">
+    <br><br>
+
+    <button onclick="getStudent()">Get Details</button>
+
+    <hr>
+
+    <div id="result"></div>
+
+    <br>
+    <a href="index.html" class="primary-btn">Back to Home</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="script.js"></script>
+
+<script>
+    // Auto-load student details if returning from category-details page
+    function initStudentPortal() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const studentIdFromUrl = urlParams.get("studentId");
+        
+        if (studentIdFromUrl) {
+            document.getElementById("studentId").value = studentIdFromUrl;
+            getStudent();
+            // Clean up URL for better UX
+            window.history.replaceState({}, document.title, "student.html");
+        }
+    }
+    
+    // Initialize when page loads
+    window.addEventListener("load", initStudentPortal);
+</script>
+
+</body>
+</html>

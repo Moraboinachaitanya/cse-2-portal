@@ -2,28 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Student Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE Portal Home</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="bg">
 
 <div class="card">
-    <h2>AI&DS Student Details</h2>
+    <h2>CSE 2 Portal</h2>
+    <p>Choose your portal.</p>
 
-    <input type="text" id="studentId" placeholder="Enter University ID">
+    <a href="student.html" class="primary-btn">Student Portal (Open Access)</a>
     <br><br>
-
-    <button onclick="getStudent()">Get Details</button>
-
-    <hr>
-
-    <!-- RESULT WILL APPEAR HERE -->
-    <div id="result"></div>
+    <a href="login.html" class="primary-btn" id="teacherPortalLink">Teacher Portal (Login Required)</a>
 </div>
 
-<!-- LOAD SCRIPT LAST -->
-<script src="script.js"></script>
+<script>
+    const TEACHER_ACCESS_CODE = "8279";
+
+    document.getElementById("teacherPortalLink").addEventListener("click", function (event) {
+        const enteredCode = prompt("Enter Teacher Access Code:");
+
+        if (enteredCode === null) {
+            event.preventDefault();
+            return;
+        }
+
+        if (enteredCode.trim() !== TEACHER_ACCESS_CODE) {
+            event.preventDefault();
+            alert("Wrong access code. Teacher portal is restricted.");
+            return;
+        }
+
+        localStorage.setItem("teacherId", TEACHER_ACCESS_CODE);
+        localStorage.setItem("loginRole", "teacher");
+    });
+</script>
 
 </body>
 </html>

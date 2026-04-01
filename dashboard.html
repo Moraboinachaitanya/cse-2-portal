@@ -22,18 +22,34 @@
 </div>
 
 <!-- Load script AFTER HTML -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="script.js"></script>
 
 <script>
-    const savedId = localStorage.getItem("studentId");
+    const ALLOWED_TEACHER_ID = "8279";
+    const urlParams = new URLSearchParams(window.location.search);
+    const teacherId = urlParams.get("teacherId") || localStorage.getItem("teacherId") || "";
+    const savedId = urlParams.get("studentId") || localStorage.getItem("prefillStudentId") || "";
+    const loginRole = urlParams.get("teacherId") ? "teacher" : (localStorage.getItem("loginRole") || "");
 
     async function init() {
+        if (loginRole !== "teacher" || teacherId !== ALLOWED_TEACHER_ID) {
+            localStorage.removeItem("loginRole");
+            localStorage.removeItem("teacherId");
+            alert("Only teachers can access this portal. Please login as teacher.");
+            window.location.href = "login.html";
+            return;
+        }
+
         await loadMasterCourses();   // wait for categories
         if (savedId) {
             document.getElementById("studentId").value = savedId;
-            getStudent();
+            await getStudent();
         }
     }
 
     init();
 </script>
+
+</body>
+</html>
