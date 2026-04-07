@@ -10,6 +10,7 @@ let cgpaByStudentId = {};
 let currentStudentCgpaGlobal = "N/A";
 let teacherCourseCompletionRowsCache = null;
 let studentHeaderRendered = false;
+let currentStudentRequestId = 0;
 
 // ===============================
 // FINAL GRADUATION REQUIREMENTS
@@ -503,13 +504,20 @@ async function viewCourseCompletionReport() {
 // GET STUDENT DATA
 // ===============================
 async function getStudent() {
+    const requestId = ++currentStudentRequestId;
+    const isCurrentRequest = () => requestId === currentStudentRequestId;
 
     if (Object.keys(courseCategoryMap).length === 0) {
         await loadMasterCourses();
     }
 
+    if (!isCurrentRequest()) return;
+
     await loadSpecializations();
+    if (!isCurrentRequest()) return;
+
     await loadStudentCgpa();
+    if (!isCurrentRequest()) return;
 
     const studentId = document.getElementById("studentId").value.trim();
     const normalizedInputId = normalizeStudentId(studentId);
@@ -542,9 +550,13 @@ async function getStudent() {
     let foundStudentTermData = false;
 
     for (const term of files) {
+        if (!isCurrentRequest()) return;
+
         try {
             const res = await fetch(term.file);
             if (!res.ok) continue;
+
+            if (!isCurrentRequest()) return;
 
             const text = await res.text();
             const rows = text.replace(/\r/g, "").trim().split("\n");
@@ -611,6 +623,8 @@ async function getStudent() {
             }
 
             if (courses.length > 0) {
+                if (!isCurrentRequest()) return;
+
                 foundAny = true;
                 if (term.type === "student") {
                     foundStudentTermData = true;
@@ -629,6 +643,8 @@ async function getStudent() {
     }
 
     if (foundAny) {
+        if (!isCurrentRequest()) return;
+
         renderOverallCategoryTable(resultDiv);
     } else {
         alert("Student ID not found in any term");

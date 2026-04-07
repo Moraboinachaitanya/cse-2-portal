@@ -6,7 +6,7 @@ This project is a static website, so you can host it free on Netlify or GitHub P
 
 1. Open https://app.netlify.com/drop
 2. In your computer, open folder:
-   - CSE 2 PORTAL
+   - AI-DS Portal
 3. Select all project files and folders, then compress as a ZIP named portal.zip
    - Include html, css, js, and all csv files
 4. Drag and drop portal.zip on the Netlify page
@@ -19,14 +19,14 @@ You can share that link with everyone.
 
 Use this when you want easy updates and version control.
 
-1. Create a new repository on GitHub (for example: cse-portal)
+1. Create a new repository on GitHub (for example: ai-ds-portal)
 2. In this project folder, run:
 
 ```powershell
 git add .
 git commit -m "Initial portal publish"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/cse-portal.git
+git remote add origin https://github.com/YOUR_USERNAME/ai-ds-portal.git
 git push -u origin main
 ```
 
@@ -37,7 +37,16 @@ git push -u origin main
    - Folder: /(root)
 4. Save and wait 1-2 minutes
 5. Your public link will be:
-   - https://YOUR_USERNAME.github.io/cse-portal/
+   - https://YOUR_USERNAME.github.io/ai-ds-portal/
+   - Replace YOUR_USERNAME with your real GitHub username.
+   - If the repo name is different, use that exact repo name in the URL.
+   - If you see a 404 page, the site has not been published to that GitHub Pages URL yet.
+
+## If The Public Link Still Shows The Old Name
+
+- Re-upload or repush the updated files after changing [index.html](index.html).
+- If you use GitHub Pages or Netlify, wait a minute for the new deploy to finish.
+- Hard refresh the browser or open the link in an incognito window to avoid cached content.
 
 ## Important Notes
 
